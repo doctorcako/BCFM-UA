@@ -6,27 +6,30 @@
 version: "3"
 
 volumes:
-  ordererexamplecom:
-  orderer2examplecom:
-  orderer3examplecom:
-  orderer4examplecom:
-  orderer5examplecom:
-  peer0org1examplecom:
-  peer0org2examplecom:
-  peer0org3examplecom:
+  ordererbcfmcom:
+  orderer2bcfmcom:
+  orderer3bcfmcom:
+  orderer4bcfmcom:
+  orderer5bcfmcom:
+  peer0uabcfmcom:
+  peer0transportbcfmcom:
+  peer0providerbcfmcom:
+  peer0producerbcfmcom:
+  peer0farmacybcfmcom:
+  peer0agencybcfmcom:
 
 networks:
-  test:
-    external:
-      name: test
+  bcfm:
+    name: bcfm
+    external: true
 
 services:
-  ordererexamplecom:
+  ordererbcfmcom:
     deploy:
       placement:
         constraints:
           - node.labels.name == manager
-    container_name: orderer.example.com
+    container_name: orderer.bcfm.com
     image: hyperledger/fabric-orderer:2.3
     environment:
       - FABRIC_LOGGING_SPEC=INFO
@@ -34,7 +37,7 @@ services:
       - ORDERER_GENERAL_LISTENPORT=7050
       - ORDERER_GENERAL_GENESISMETHOD=file
       - ORDERER_GENERAL_GENESISFILE=/var/hyperledger/orderer/orderer.genesis.block
-      - ORDERER_GENERAL_LOCALMSPID=OrdererMSP
+      - ORDERER_GENERAL_LOCALMSPID=BcfmOrdererMSP
       - ORDERER_GENERAL_LOCALMSPDIR=/var/hyperledger/orderer/msp
       # enabled TLS
       - ORDERER_GENERAL_TLS_ENABLED=true
@@ -49,22 +52,22 @@ services:
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric
     command: orderer
     volumes:
-      - /home/ubuntu/hlf-docker-swarm/test-network/system-genesis-block/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
-      - /home/ubuntu/hlf-docker-swarm/test-network/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp:/var/hyperledger/orderer/msp
-      - /home/ubuntu/hlf-docker-swarm/test-network/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/tls/:/var/hyperledger/orderer/tls
-      - ordererexamplecom:/var/hyperledger/production/orderer
+      - /home/ubuntu/BlockchainFarmManager/BCFM-UA/network/system-genesis-block/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
+      - /home/ubuntu/BlockchainFarmManager/BCFM-UA/network/organizations/ordererOrganizations/bcfm.com/orderers/orderer.bcfm.com/msp:/var/hyperledger/orderer/msp
+      - /home/ubuntu/BlockchainFarmManager/BCFM-UA/network/organizations/ordererOrganizations/bcfm.com/orderers/orderer.bcfm.com/tls/:/var/hyperledger/orderer/tls
+      - ordererbcfmcom:/var/hyperledger/production/orderer
     ports:
       - 7050:7050
     networks:
-      test:
+      bcfm:
         aliases:
-          - orderer.example.com
-  orderer2examplecom:
+          - orderer.bcfm.com
+  orderer2bcfmcom:
     deploy:
       placement:
         constraints:
           - node.labels.name == manager
-    container_name: orderer2.example.com
+    container_name: orderer2.bcfm.com
     image: hyperledger/fabric-orderer:2.3
     environment:
       - FABRIC_LOGGING_SPEC=INFO
@@ -72,7 +75,7 @@ services:
       - ORDERER_GENERAL_LISTENPORT=7050
       - ORDERER_GENERAL_GENESISMETHOD=file
       - ORDERER_GENERAL_GENESISFILE=/var/hyperledger/orderer/orderer.genesis.block
-      - ORDERER_GENERAL_LOCALMSPID=OrdererMSP
+      - ORDERER_GENERAL_LOCALMSPID=BcfmOrdererMSP
       - ORDERER_GENERAL_LOCALMSPDIR=/var/hyperledger/orderer/msp
       # enabled TLS
       - ORDERER_GENERAL_TLS_ENABLED=true
@@ -87,23 +90,23 @@ services:
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric
     command: orderer
     volumes:
-      - /home/ubuntu/hlf-docker-swarm/test-network/system-genesis-block/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
-      - /home/ubuntu/hlf-docker-swarm/test-network/organizations/ordererOrganizations/example.com/orderers/orderer2.example.com/msp:/var/hyperledger/orderer/msp
-      - /home/ubuntu/hlf-docker-swarm/test-network/organizations/ordererOrganizations/example.com/orderers/orderer2.example.com/tls/:/var/hyperledger/orderer/tls
-      - orderer2examplecom:/var/hyperledger/production/orderer
+      - /home/ubuntu/BlockchainFarmManager/BCFM-UA/network/system-genesis-block/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
+      - /home/ubuntu/BlockchainFarmManager/BCFM-UA/network/organizations/ordererOrganizations/bcfm.com/orderers/orderer2.bcfm.com/msp:/var/hyperledger/orderer/msp
+      - /home/ubuntu/BlockchainFarmManager/BCFM-UA/network/organizations/ordererOrganizations/bcfm.com/orderers/orderer2.bcfm.com/tls/:/var/hyperledger/orderer/tls
+      - orderer2bcfmcom:/var/hyperledger/production/orderer
     ports:
       - 8050:7050
     networks:
-      test:
+      bcfm:
         aliases:
-          - orderer2.example.com
+          - orderer2.bcfm.com
 
-  orderer3examplecom:
+  orderer3bcfmcom:
     deploy:
       placement:
         constraints:
           - node.labels.name == manager
-    container_name: orderer3.example.com
+    container_name: orderer3.bcfm.com
     image: hyperledger/fabric-orderer:2.3
     environment:
       - FABRIC_LOGGING_SPEC=INFO
@@ -111,7 +114,7 @@ services:
       - ORDERER_GENERAL_LISTENPORT=7050
       - ORDERER_GENERAL_GENESISMETHOD=file
       - ORDERER_GENERAL_GENESISFILE=/var/hyperledger/orderer/orderer.genesis.block
-      - ORDERER_GENERAL_LOCALMSPID=OrdererMSP
+      - ORDERER_GENERAL_LOCALMSPID=BcfmOrdererMSP
       - ORDERER_GENERAL_LOCALMSPDIR=/var/hyperledger/orderer/msp
       # enabled TLS
       - ORDERER_GENERAL_TLS_ENABLED=true
@@ -126,23 +129,23 @@ services:
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric
     command: orderer
     volumes:
-      - /home/ubuntu/hlf-docker-swarm/test-network/system-genesis-block/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
-      - /home/ubuntu/hlf-docker-swarm/test-network/organizations/ordererOrganizations/example.com/orderers/orderer3.example.com/msp:/var/hyperledger/orderer/msp
-      - /home/ubuntu/hlf-docker-swarm/test-network/organizations/ordererOrganizations/example.com/orderers/orderer3.example.com/tls/:/var/hyperledger/orderer/tls
-      - orderer3examplecom:/var/hyperledger/production/orderer
+      - /home/ubuntu/BlockchainFarmManager/BCFM-UA/network/system-genesis-block/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
+      - /home/ubuntu/BlockchainFarmManager/BCFM-UA/network/organizations/ordererOrganizations/bcfm.com/orderers/orderer3.bcfm.com/msp:/var/hyperledger/orderer/msp
+      - /home/ubuntu/BlockchainFarmManager/BCFM-UA/network/organizations/ordererOrganizations/bcfm.com/orderers/orderer3.bcfm.com/tls/:/var/hyperledger/orderer/tls
+      - orderer3bcfmcom:/var/hyperledger/production/orderer
     ports:
       - 9050:7050
     networks:
-      test:
+      bcfm:
         aliases:
-          - orderer3.example.com
+          - orderer3.bcfm.com
 
-  orderer4examplecom:
+  orderer4bcfmcom:
     deploy:
       placement:
         constraints:
           - node.labels.name == manager
-    container_name: orderer4.example.com
+    container_name: orderer4.bcfm.com
     image: hyperledger/fabric-orderer:2.3
     environment:
       - FABRIC_LOGGING_SPEC=INFO
@@ -150,7 +153,7 @@ services:
       - ORDERER_GENERAL_LISTENPORT=7050
       - ORDERER_GENERAL_GENESISMETHOD=file
       - ORDERER_GENERAL_GENESISFILE=/var/hyperledger/orderer/orderer.genesis.block
-      - ORDERER_GENERAL_LOCALMSPID=OrdererMSP
+      - ORDERER_GENERAL_LOCALMSPID=BcfmOrdererMSP
       - ORDERER_GENERAL_LOCALMSPDIR=/var/hyperledger/orderer/msp
       # enabled TLS
       - ORDERER_GENERAL_TLS_ENABLED=true
@@ -165,23 +168,23 @@ services:
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric
     command: orderer
     volumes:
-      - /home/ubuntu/hlf-docker-swarm/test-network/system-genesis-block/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
-      - /home/ubuntu/hlf-docker-swarm/test-network/organizations/ordererOrganizations/example.com/orderers/orderer4.example.com/msp:/var/hyperledger/orderer/msp
-      - /home/ubuntu/hlf-docker-swarm/test-network/organizations/ordererOrganizations/example.com/orderers/orderer4.example.com/tls/:/var/hyperledger/orderer/tls
-      - orderer4examplecom:/var/hyperledger/production/orderer
+      - /home/ubuntu/BlockchainFarmManager/BCFM-UA/network/system-genesis-block/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
+      - /home/ubuntu/BlockchainFarmManager/BCFM-UA/network/organizations/ordererOrganizations/bcfm.com/orderers/orderer4.bcfm.com/msp:/var/hyperledger/orderer/msp
+      - /home/ubuntu/BlockchainFarmManager/BCFM-UA/network/organizations/ordererOrganizations/bcfm.com/orderers/orderer4.bcfm.com/tls/:/var/hyperledger/orderer/tls
+      - orderer4bcfmcom:/var/hyperledger/production/orderer
     ports:
       - 10050:7050
     networks:
-      test:
+      bcfm:
         aliases:
-          - orderer4.example.com
+          - orderer4.bcfm.com
 
-  orderer5examplecom:
+  orderer5bcfmcom:
     deploy:
       placement:
         constraints:
           - node.labels.name == manager
-    container_name: orderer5.example.com
+    container_name: orderer5.bcfm.com
     image: hyperledger/fabric-orderer:2.3
     environment:
       - FABRIC_LOGGING_SPEC=INFO
@@ -189,7 +192,7 @@ services:
       - ORDERER_GENERAL_LISTENPORT=7050
       - ORDERER_GENERAL_GENESISMETHOD=file
       - ORDERER_GENERAL_GENESISFILE=/var/hyperledger/orderer/orderer.genesis.block
-      - ORDERER_GENERAL_LOCALMSPID=OrdererMSP
+      - ORDERER_GENERAL_LOCALMSPID=BcfmOrdererMSP
       - ORDERER_GENERAL_LOCALMSPDIR=/var/hyperledger/orderer/msp
       # enabled TLS
       - ORDERER_GENERAL_TLS_ENABLED=true
@@ -204,23 +207,23 @@ services:
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric
     command: orderer
     volumes:
-      - /home/ubuntu/hlf-docker-swarm/test-network/system-genesis-block/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
-      - /home/ubuntu/hlf-docker-swarm/test-network/organizations/ordererOrganizations/example.com/orderers/orderer5.example.com/msp:/var/hyperledger/orderer/msp
-      - /home/ubuntu/hlf-docker-swarm/test-network/organizations/ordererOrganizations/example.com/orderers/orderer5.example.com/tls/:/var/hyperledger/orderer/tls
-      - orderer5examplecom:/var/hyperledger/production/orderer
+      - /home/ubuntu/BlockchainFarmManager/BCFM-UA/network/system-genesis-block/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
+      - /home/ubuntu/BlockchainFarmManager/BCFM-UA/network/organizations/ordererOrganizations/bcfm.com/orderers/orderer5.bcfm.com/msp:/var/hyperledger/orderer/msp
+      - /home/ubuntu/BlockchainFarmManager/BCFM-UA/network/organizations/ordererOrganizations/bcfm.com/orderers/orderer5.bcfm.com/tls/:/var/hyperledger/orderer/tls
+      - orderer5bcfmcom:/var/hyperledger/production/orderer
     ports:
       - 11050:7050
     networks:
-      test:
+      bcfm:
         aliases:
-          - orderer5.example.com
+          - orderer5.bcfm.com
 
-  peer0org1examplecom:
+  peer0uabcfmcom:
     deploy:
       placement:
         constraints:
           - node.labels.name == manager
-    container_name: peer0.org1.example.com
+    container_name: peer0.ua.bcfm.com
     image: hyperledger/fabric-peer:2.3
     environment:
       #Generic peer variables
@@ -238,37 +241,37 @@ services:
       - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
       - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt
       # Peer specific variabes
-      - CORE_PEER_ID=peer0.org1.example.com
-      - CORE_PEER_ADDRESS=peer0.org1.example.com:7051
+      - CORE_PEER_ID=peer0.ua.bcfm.com
+      - CORE_PEER_ADDRESS=peer0.ua.bcfm.com:7051
       - CORE_PEER_LISTENADDRESS=0.0.0.0:7051
-      - CORE_PEER_CHAINCODEADDRESS=peer0.org1.example.com:7052
+      - CORE_PEER_CHAINCODEADDRESS=peer0.ua.bcfm.com:7052
       - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:7052
-      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
-      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.org1.example.com:7051
-      - CORE_PEER_LOCALMSPID=Org1MSP
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.ua.bcfm.com:7051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.ua.bcfm.com:7051
+      - CORE_PEER_LOCALMSPID=UaMSP
       - CORE_PEER_GOSSIP_USELEADERELECTION=true
       - CORE_PEER_GOSSIP_ORGLEADER=false
       - CORE_PEER_TLS_CLIENTAUTHREQUIRED=false
     volumes:
       - /var/run/:/host/var/run/
-      - /home/ubuntu/hlf-docker-swarm/test-network/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/msp:/etc/hyperledger/fabric/msp
-      - /home/ubuntu/hlf-docker-swarm/test-network/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls:/etc/hyperledger/fabric/tls
-      - peer0org1examplecom:/var/hyperledger/production
+      - /home/ubuntu/BlockchainFarmManager/BCFM-UA/network/organizations/peerOrganizations/ua.bcfm.com/peers/peer0.ua.bcfm.com/msp:/etc/hyperledger/fabric/msp
+      - /home/ubuntu/BlockchainFarmManager/BCFM-UA/network/organizations/peerOrganizations/ua.bcfm.com/peers/peer0.ua.bcfm.com/tls:/etc/hyperledger/fabric/tls
+      - peer0uabcfmcom:/var/hyperledger/production
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
     command: peer node start
     ports:
       - 7051:7051
     networks:
-      test:
+      bcfm:
         aliases:
-          - peer0.org1.example.com
+          - peer0.ua.bcfm.com
 
-  peer0org2examplecom:
+  peer0transportbcfmcom:
     deploy:
       placement:
         constraints:
-          - node.labels.name == worker1
-    container_name: peer0.org2.example.com
+          - node.labels.name == manager
+    container_name: peer0.transport.bcfm.com
     image: hyperledger/fabric-peer:2.3
     environment:
       #Generic peer variables
@@ -286,37 +289,37 @@ services:
       - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
       - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt
       # Peer specific variabes
-      - CORE_PEER_ID=peer0.org2.example.com
-      - CORE_PEER_ADDRESS=peer0.org2.example.com:9051
+      - CORE_PEER_ID=peer0.transport.bcfm.com
+      - CORE_PEER_ADDRESS=peer0.transport.bcfm.com:9051
       - CORE_PEER_LISTENADDRESS=0.0.0.0:9051
-      - CORE_PEER_CHAINCODEADDRESS=peer0.org2.example.com:9052
+      - CORE_PEER_CHAINCODEADDRESS=peer0.transport.bcfm.com:9052
       - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:9052
-      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.org2.example.com:9051
-      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org2.example.com:9051
-      - CORE_PEER_LOCALMSPID=Org2MSP
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.transport.bcfm.com:9051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.transport.bcfm.com:9051
+      - CORE_PEER_LOCALMSPID=TransportMSP
       - CORE_PEER_GOSSIP_USELEADERELECTION=true
       - CORE_PEER_GOSSIP_ORGLEADER=false
       - CORE_PEER_TLS_CLIENTAUTHREQUIRED=false
     volumes:
       - /var/run/:/host/var/run/
-      - /home/ubuntu/hlf-docker-swarm/test-network/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/msp:/etc/hyperledger/fabric/msp
-      - /home/ubuntu/hlf-docker-swarm/test-network/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls:/etc/hyperledger/fabric/tls
-      - peer0org2examplecom:/var/hyperledger/production
+      - /home/ubuntu/BlockchainFarmManager/BCFM-UA/network/organizations/peerOrganizations/transport.bcfm.com/peers/peer0.transport.bcfm.com/msp:/etc/hyperledger/fabric/msp
+      - /home/ubuntu/BlockchainFarmManager/BCFM-UA/network/organizations/peerOrganizations/transport.bcfm.com/peers/peer0.transport.bcfm.com/tls:/etc/hyperledger/fabric/tls
+      - peer0transportbcfmcom:/var/hyperledger/production
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
     command: peer node start
     ports:
       - 9051:9051
     networks:
-      test:
+      bcfm:
         aliases:
-          - peer0.org2.example.com
+          - peer0.transport.bcfm.com
 
-  peer0org3examplecom:
+  peer0providerbcfmcom:
     deploy:
       placement:
         constraints:
-          - node.labels.name == worker2
-    container_name: peer0.org3.example.com
+          - node.labels.name == manager
+    container_name: peer0.provider.bcfm.com
     image: hyperledger/fabric-peer:2.3
     environment:
       #Generic peer variables
@@ -334,27 +337,171 @@ services:
       - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
       - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt
       # Peer specific variabes
-      - CORE_PEER_ID=peer0.org3.example.com
-      - CORE_PEER_ADDRESS=peer0.org3.example.com:11051
+      - CORE_PEER_ID=peer0.provider.bcfm.com
+      - CORE_PEER_ADDRESS=peer0.provider.bcfm.com:11051
       - CORE_PEER_LISTENADDRESS=0.0.0.0:11051
-      - CORE_PEER_CHAINCODEADDRESS=peer0.org3.example.com:11052
+      - CORE_PEER_CHAINCODEADDRESS=peer0.provider.bcfm.com:11052
       - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:11052
-      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.org3.example.com:11051
-      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org3.example.com:11051
-      - CORE_PEER_LOCALMSPID=Org3MSP
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.provider.bcfm.com:11051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.provider.bcfm.com:11051
+      - CORE_PEER_LOCALMSPID=ProviderMSP
       - CORE_PEER_GOSSIP_USELEADERELECTION=true
       - CORE_PEER_GOSSIP_ORGLEADER=false
       - CORE_PEER_TLS_CLIENTAUTHREQUIRED=false
     volumes:
       - /var/run/:/host/var/run/
-      - /home/ubuntu/hlf-docker-swarm/test-network/organizations/peerOrganizations/org3.example.com/peers/peer0.org3.example.com/msp:/etc/hyperledger/fabric/msp
-      - /home/ubuntu/hlf-docker-swarm/test-network/organizations/peerOrganizations/org3.example.com/peers/peer0.org3.example.com/tls:/etc/hyperledger/fabric/tls
-      - peer0org3examplecom:/var/hyperledger/production
+      - /home/ubuntu/BlockchainFarmManager/BCFM-UA/network/organizations/peerOrganizations/provider.bcfm.com/peers/peer0.provider.bcfm.com/msp:/etc/hyperledger/fabric/msp
+      - /home/ubuntu/BlockchainFarmManager/BCFM-UA/network/organizations/peerOrganizations/provider.bcfm.com/peers/peer0.provider.bcfm.com/tls:/etc/hyperledger/fabric/tls
+      - peer0providerbcfmcom:/var/hyperledger/production
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
     command: peer node start
     ports:
       - 11051:11051
     networks:
-      test:
+      bcfm:
         aliases:
-          - peer0.org3.example.com
+          - peer0.provider.bcfm.com
+
+  peer0producerbcfmcom:
+    deploy:
+      placement:
+        constraints:
+          - node.labels.name == manager
+    container_name: peer0.producer.bcfm.com
+    image: hyperledger/fabric-peer:2.3
+    environment:
+      #Generic peer variables
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      # the following setting starts chaincode containers on the same
+      # bridge network as the peers
+      # https://docs.docker.com/compose/networking/
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=test
+      - FABRIC_LOGGING_SPEC=INFO
+      #- FABRIC_LOGGING_SPEC=DEBUG
+      - CORE_PEER_TLS_ENABLED=true
+      - CORE_PEER_PROFILE_ENABLED=true
+      - CORE_PEER_ADDRESSAUTODETECT=true
+      - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt
+      - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
+      - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt
+      # Peer specific variabes
+      - CORE_PEER_ID=peer0.producer.bcfm.com
+      - CORE_PEER_ADDRESS=peer0.producer.bcfm.com:12051
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:12051
+      - CORE_PEER_CHAINCODEADDRESS=peer0.producer.bcfm.com:12052
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:12052
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.producer.bcfm.com:12051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.producer.bcfm.com:12051
+      - CORE_PEER_LOCALMSPID=ProducerMSP
+      - CORE_PEER_GOSSIP_USELEADERELECTION=true
+      - CORE_PEER_GOSSIP_ORGLEADER=false
+      - CORE_PEER_TLS_CLIENTAUTHREQUIRED=false
+    volumes:
+      - /var/run/:/host/var/run/
+      - /home/ubuntu/BlockchainFarmManager/BCFM-UA/network/organizations/peerOrganizations/producer.bcfm.com/peers/peer0.producer.bcfm.com/msp:/etc/hyperledger/fabric/msp
+      - /home/ubuntu/BlockchainFarmManager/BCFM-UA/network/organizations/peerOrganizations/producer.bcfm.com/peers/peer0.producer.bcfm.com/tls:/etc/hyperledger/fabric/tls
+      - peer0producerbcfmcom:/var/hyperledger/production
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+    command: peer node start
+    ports:
+      - 12051:12051
+    networks:
+      bcfm:
+        aliases:
+          - peer0.producer.bcfm.com
+
+  peer0farmacybcfmcom:
+    deploy:
+      placement:
+        constraints:
+          - node.labels.name == manager
+    container_name: peer0.farmacy.bcfm.com
+    image: hyperledger/fabric-peer:2.3
+    environment:
+      #Generic peer variables
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      # the following setting starts chaincode containers on the same
+      # bridge network as the peers
+      # https://docs.docker.com/compose/networking/
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=test
+      - FABRIC_LOGGING_SPEC=INFO
+      #- FABRIC_LOGGING_SPEC=DEBUG
+      - CORE_PEER_TLS_ENABLED=true
+      - CORE_PEER_PROFILE_ENABLED=true
+      - CORE_PEER_ADDRESSAUTODETECT=true
+      - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt
+      - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
+      - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt
+      # Peer specific variabes
+      - CORE_PEER_ID=peer0.farmacy.bcfm.com
+      - CORE_PEER_ADDRESS=peer0.farmacy.bcfm.com:13051
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:13051
+      - CORE_PEER_CHAINCODEADDRESS=peer0.farmacy.bcfm.com:13052
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:13052
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.farmacy.bcfm.com:13051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.farmacy.bcfm.com:13051
+      - CORE_PEER_LOCALMSPID=FarmacyMSP
+      - CORE_PEER_GOSSIP_USELEADERELECTION=true
+      - CORE_PEER_GOSSIP_ORGLEADER=false
+      - CORE_PEER_TLS_CLIENTAUTHREQUIRED=false
+    volumes:
+      - /var/run/:/host/var/run/
+      - /home/ubuntu/BlockchainFarmManager/BCFM-UA/network/organizations/peerOrganizations/farmacy.bcfm.com/peers/peer0.farmacy.bcfm.com/msp:/etc/hyperledger/fabric/msp
+      - /home/ubuntu/BlockchainFarmManager/BCFM-UA/network/organizations/peerOrganizations/farmacy.bcfm.com/peers/peer0.farmacy.bcfm.com/tls:/etc/hyperledger/fabric/tls
+      - peer0farmacybcfmcom:/var/hyperledger/production
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+    command: peer node start
+    ports:
+      - 13051:13051
+    networks:
+      bcfm:
+        aliases:
+          - peer0.farmacy.bcfm.com
+
+  peer0agencybcfmcom:
+    deploy:
+      placement:
+        constraints:
+          - node.labels.name == manager
+    container_name: peer0.agency.bcfm.com
+    image: hyperledger/fabric-peer:2.3
+    environment:
+      #Generic peer variables
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      # the following setting starts chaincode containers on the same
+      # bridge network as the peers
+      # https://docs.docker.com/compose/networking/
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=test
+      - FABRIC_LOGGING_SPEC=INFO
+      #- FABRIC_LOGGING_SPEC=DEBUG
+      - CORE_PEER_TLS_ENABLED=true
+      - CORE_PEER_PROFILE_ENABLED=true
+      - CORE_PEER_ADDRESSAUTODETECT=true
+      - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt
+      - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
+      - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt
+      # Peer specific variabes
+      - CORE_PEER_ID=peer0.agency.bcfm.com
+      - CORE_PEER_ADDRESS=peer0.agency.bcfm.com:14051
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:14051
+      - CORE_PEER_CHAINCODEADDRESS=peer0.agency.bcfm.com:14052
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:14052
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.agency.bcfm.com:14051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.agency.bcfm.com:14051
+      - CORE_PEER_LOCALMSPID=AgencyMSP
+      - CORE_PEER_GOSSIP_USELEADERELECTION=true
+      - CORE_PEER_GOSSIP_ORGLEADER=false
+      - CORE_PEER_TLS_CLIENTAUTHREQUIRED=false
+    volumes:
+      - /var/run/:/host/var/run/
+      - /home/ubuntu/BlockchainFarmManager/BCFM-UA/network/organizations/peerOrganizations/agency.bcfm.com/peers/peer0.agency.bcfm.com/msp:/etc/hyperledger/fabric/msp
+      - /home/ubuntu/BlockchainFarmManager/BCFM-UA/network/organizations/peerOrganizations/agency.bcfm.com/peers/peer0.agency.bcfm.com/tls:/etc/hyperledger/fabric/tls
+      - peer0agencybcfmcom:/var/hyperledger/production
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+    command: peer node start
+    ports:
+      - 14051:14051
+    networks:
+      bcfm:
+        aliases:
+          - peer0.agency.bcfm.com

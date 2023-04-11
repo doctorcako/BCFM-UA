@@ -6,9 +6,9 @@
 version: "3"
 
 networks:
-  test:
+  bcfm:
     external:
-      name: test
+      name: bcfm
 
 services:
   couchdb0:
@@ -28,18 +28,18 @@ services:
     ports:
       - "5984:5984"
     networks:
-      test:
+      bcfm:
         aliases:
-          - couchdb0.example.com
+          - couchdb0.bcfm.com
 
-  peer0org1examplecom:
+  peer0uabcfmcom:
     deploy:
       placement:
         constraints:
           - node.labels.name == manager
     environment:
       - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
-      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb0.example.com:5984
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb0.bcfm.com:5984
       # The CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME and CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD
       # provide the credentials for ledger to connect to CouchDB.  The username and password must
       # match the username and password set for the associated CouchDB.
@@ -52,7 +52,7 @@ services:
     deploy:
       placement:
         constraints:
-          - node.labels.name == worker1
+          - node.labels.name == manager
     container_name: couchdb1
     image: couchdb:3.1.1
     # Populate the COUCHDB_USER and COUCHDB_PASSWORD to set an admin user and password
@@ -65,18 +65,18 @@ services:
     ports:
       - "7984:5984"
     networks:
-      test:
+      bcfm:
         aliases:
-          - couchdb1.example.com
+          - couchdb1.bcfm.com
 
-  peer0org2examplecom:
+  peer0transportbcfmcom:
     deploy:
       placement:
         constraints:
-          - node.labels.name == worker1
+          - node.labels.name == manager
     environment:
       - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
-      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb1.example.com:5984
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb1.bcfm.com:5984
       # The CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME and CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD
       # provide the credentials for ledger to connect to CouchDB.  The username and password must
       # match the username and password set for the associated CouchDB.
@@ -89,7 +89,7 @@ services:
     deploy:
       placement:
         constraints:
-          - node.labels.name == worker2
+          - node.labels.name == manager
     container_name: couchdb2
     image: couchdb:3.1.1
     # Populate the COUCHDB_USER and COUCHDB_PASSWORD to set an admin user and password
@@ -102,18 +102,18 @@ services:
     ports:
       - "9984:5984"
     networks:
-      test:
+      bcfm:
         aliases:
-          - couchdb2.example.com
+          - couchdb2.bcfm.com
 
-  peer0org3examplecom:
+  peer0providerbcfmcom:
     deploy:
       placement:
         constraints:
-          - node.labels.name == worker2
+          - node.labels.name == manager
     environment:
       - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
-      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb2.example.com:5984
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb2.bcfm.com:5984
       # The CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME and CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD
       # provide the credentials for ledger to connect to CouchDB.  The username and password must
       # match the username and password set for the associated CouchDB.
@@ -121,3 +121,114 @@ services:
       - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=adminpw
     depends_on:
       - couchdb2
+
+  couchdb3:
+    deploy:
+      placement:
+        constraints:
+          - node.labels.name == manager
+    container_name: couchdb3
+    image: couchdb:3.1.1
+    # Populate the COUCHDB_USER and COUCHDB_PASSWORD to set an admin user and password
+    # for CouchDB.  This will prevent CouchDB from operating in an "Admin Party" mode.
+    environment:
+      - COUCHDB_USER=admin
+      - COUCHDB_PASSWORD=adminpw
+    # Comment/Uncomment the port mapping if you want to hide/expose the CouchDB service,
+    # for example map it to utilize Fauxton User Interface in dev environments.
+    ports:
+      - "10984:5984"
+    networks:
+      bcfm:
+        aliases:
+          - couchdb3.bcfm.com
+
+  peer0producerbcfmcom:
+    deploy:
+      placement:
+        constraints:
+          - node.labels.name == manager
+    environment:
+      - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb3.bcfm.com:5984
+      # The CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME and CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD
+      # provide the credentials for ledger to connect to CouchDB.  The username and password must
+      # match the username and password set for the associated CouchDB.
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=admin
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=adminpw
+    depends_on:
+      - couchdb3
+
+  couchdb4:
+    deploy:
+      placement:
+        constraints:
+          - node.labels.name == manager
+    container_name: couchdb4
+    image: couchdb:3.1.1
+    # Populate the COUCHDB_USER and COUCHDB_PASSWORD to set an admin user and password
+    # for CouchDB.  This will prevent CouchDB from operating in an "Admin Party" mode.
+    environment:
+      - COUCHDB_USER=admin
+      - COUCHDB_PASSWORD=adminpw
+    # Comment/Uncomment the port mapping if you want to hide/expose the CouchDB service,
+    # for example map it to utilize Fauxton User Interface in dev environments.
+    ports:
+      - "11984:5984"
+    networks:
+      bcfm:
+        aliases:
+          - couchdb4.bcfm.com
+
+  peer0farmacybcfmcom:
+    deploy:
+      placement:
+        constraints:
+          - node.labels.name == manager
+    environment:
+      - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb4.bcfm.com:5984
+      # The CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME and CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD
+      # provide the credentials for ledger to connect to CouchDB.  The username and password must
+      # match the username and password set for the associated CouchDB.
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=admin
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=adminpw
+    depends_on:
+      - couchdb4
+
+  couchdb5:
+    deploy:
+      placement:
+        constraints:
+          - node.labels.name == manager
+    container_name: couchdb5
+    image: couchdb:3.1.1
+    # Populate the COUCHDB_USER and COUCHDB_PASSWORD to set an admin user and password
+    # for CouchDB.  This will prevent CouchDB from operating in an "Admin Party" mode.
+    environment:
+      - COUCHDB_USER=admin
+      - COUCHDB_PASSWORD=adminpw
+    # Comment/Uncomment the port mapping if you want to hide/expose the CouchDB service,
+    # for example map it to utilize Fauxton User Interface in dev environments.
+    ports:
+      - "12984:5984"
+    networks:
+      bcfm:
+        aliases:
+          - couchdb5.bcfm.com
+
+  peer0agencybcfmcom:
+    deploy:
+      placement:
+        constraints:
+          - node.labels.name == manager
+    environment:
+      - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb5.bcfm.com:5984
+      # The CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME and CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD
+      # provide the credentials for ledger to connect to CouchDB.  The username and password must
+      # match the username and password set for the associated CouchDB.
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=admin
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=adminpw
+    depends_on:
+      - couchdb5

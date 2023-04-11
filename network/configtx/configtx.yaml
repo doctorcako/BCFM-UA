@@ -16,16 +16,16 @@ Organizations:
 
     # SampleOrg defines an MSP using the sampleconfig.  It should never be used
     # in production but may be used as a template for other definitions
-    - &OrdererOrg
+    - &BcfmOrdererOrg
         # DefaultOrg defines the organization which is used in the sampleconfig
         # of the fabric.git development environment
-        Name: OrdererOrg
+        Name: BcfmOrdererOrg
 
         # ID to load the MSP definition as
-        ID: OrdererMSP
+        ID: BcfmOrdererMSP
 
         # MSPDir is the filesystem path which contains the MSP configuration
-        MSPDir: ../organizations/ordererOrganizations/example.com/msp
+        MSPDir: ../organizations/ordererOrganizations/bcfm.com/msp
 
         # Policies defines the set of policies at this level of the config tree
         # For organization policies, their canonical path is usually
@@ -33,29 +33,26 @@ Organizations:
         Policies:
             Readers:
                 Type: Signature
-                Rule: "OR('OrdererMSP.member')"
+                Rule: "OR('BcfmOrdererOrg.member')"
             Writers:
                 Type: Signature
-                Rule: "OR('OrdererMSP.member')"
+                Rule: "OR('BcfmOrdererOrg.member')"
             Admins:
                 Type: Signature
-                Rule: "OR('OrdererMSP.admin')"
-            Endorsement:
-                Type: Signature
-                Rule: "OR('OrdererMSP.member')"
+                Rule: "OR('BcfmOrdererOrg.admin')"
 
         OrdererEndpoints:
-            - orderer.example.com:7050
+            - orderer.bcfm.com:13050
 
-    - &Org1
+    - &Ua
         # DefaultOrg defines the organization which is used in the sampleconfig
         # of the fabric.git development environment
-        Name: Org1MSP
+        Name: UaMSP
 
         # ID to load the MSP definition as
-        ID: Org1MSP
+        ID: UaMSP
 
-        MSPDir: ../organizations/peerOrganizations/org1.example.com/msp
+        MSPDir: ../organizations/peerOrganizations/ua.bcfm.com/msp
 
         # Policies defines the set of policies at this level of the config tree
         # For organization policies, their canonical path is usually
@@ -63,34 +60,33 @@ Organizations:
         Policies:
             Readers:
                 Type: Signature
-                Rule: "OR('Org1MSP.member')"
+                Rule: "OR('UaMSP.admin', 'UaMSP.peer', 'UaMSP.client')"
             Writers:
                 Type: Signature
-                Rule: "OR('Org1MSP.member')"
+                Rule: "OR('UaMSP.admin', 'UaMSP.client')"
             Admins:
                 Type: Signature
-                Rule: "OR('Org1MSP.admin')"
+                Rule: "OR('UaMSP.admin')"
             Endorsement:
                 Type: Signature
-                Rule: "OR('Org1MSP.peer')"
+                Rule: "OR('UaMSP.peer')"
 
-        # leave this flag set to true.
         AnchorPeers:
             # AnchorPeers defines the location of peers which can be used
             # for cross org gossip communication.  Note, this value is only
             # encoded in the genesis block in the Application section context
-            - Host: peer0.org1.example.com
+            - Host: peer0.ua.bcfm.com
               Port: 7051
 
-    - &Org2
+    - &Transport
         # DefaultOrg defines the organization which is used in the sampleconfig
         # of the fabric.git development environment
-        Name: Org2MSP
+        Name: TransportMSP
 
         # ID to load the MSP definition as
-        ID: Org2MSP
+        ID: TransportMSP
 
-        MSPDir: ../organizations/peerOrganizations/org2.example.com/msp
+        MSPDir: ../organizations/peerOrganizations/transport.bcfm.com/msp
 
         # Policies defines the set of policies at this level of the config tree
         # For organization policies, their canonical path is usually
@@ -98,33 +94,67 @@ Organizations:
         Policies:
             Readers:
                 Type: Signature
-                Rule: "OR('Org2MSP.member')"
+                Rule: "OR('TransportMSP.admin', 'TransportMSP.peer', 'TransportMSP.client')"
             Writers:
                 Type: Signature
-                Rule: "OR('Org2MSP.member')"
+                Rule: "OR('TransportMSP.admin', 'TransportMSP.client')"
             Admins:
                 Type: Signature
-                Rule: "OR('Org2MSP.admin')"
+                Rule: "OR('TransportMSP.admin')"
             Endorsement:
                 Type: Signature
-                Rule: "OR('Org2MSP.peer')"
+                Rule: "OR('TransportMSP.peer')"
 
         AnchorPeers:
             # AnchorPeers defines the location of peers which can be used
             # for cross org gossip communication.  Note, this value is only
             # encoded in the genesis block in the Application section context
-            - Host: peer0.org2.example.com
+            - Host: peer0.transport.bcfm.com
+              Port: 8051
+
+    - &Provider
+        # DefaultOrg defines the organization which is used in the sampleconfig
+        # of the fabric.git development environment
+        Name: ProviderMSP
+
+        # ID to load the MSP definition as
+        ID: ProviderMSP
+
+        MSPDir: ../organizations/peerOrganizations/provider.bcfm.com/msp
+
+        # Policies defines the set of policies at this level of the config tree
+        # For organization policies, their canonical path is usually
+        #   /Channel/<Application|Orderer>/<OrgName>/<PolicyName>
+        Policies:
+            Readers:
+                Type: Signature
+                Rule: "OR('ProviderMSP.admin', 'ProviderMSP.peer', 'ProviderMSP.client')"
+            Writers:
+                Type: Signature
+                Rule: "OR('ProviderMSP.admin', 'ProviderMSP.client')"
+            Admins:
+                Type: Signature
+                Rule: "OR('ProviderMSP.admin')"
+            Endorsement:
+                Type: Signature
+                Rule: "OR('ProviderMSP.peer')"
+
+        AnchorPeers:
+            # AnchorPeers defines the location of peers which can be used
+            # for cross org gossip communication.  Note, this value is only
+            # encoded in the genesis block in the Application section context
+            - Host: peer0.provider.bcfm.com
               Port: 9051
-
-    - &Org3
+    
+    - &Producer
         # DefaultOrg defines the organization which is used in the sampleconfig
         # of the fabric.git development environment
-        Name: Org3MSP
+        Name: ProducerMSP
 
         # ID to load the MSP definition as
-        ID: Org3MSP
+        ID: ProducerMSP
 
-        MSPDir: ../organizations/peerOrganizations/org3.example.com/msp
+        MSPDir: ../organizations/peerOrganizations/producer.bcfm.com/msp
 
         # Policies defines the set of policies at this level of the config tree
         # For organization policies, their canonical path is usually
@@ -132,24 +162,91 @@ Organizations:
         Policies:
             Readers:
                 Type: Signature
-                Rule: "OR('Org3MSP.member')"
+                Rule: "OR('ProducerMSP.admin', 'ProducerMSP.peer', 'ProducerMSP.client')"
             Writers:
                 Type: Signature
-                Rule: "OR('Org3MSP.member')"
+                Rule: "OR('ProducerMSP.admin', 'ProducerMSP.client')"
             Admins:
                 Type: Signature
-                Rule: "OR('Org3MSP.admin')"
+                Rule: "OR('ProducerMSP.admin')"
             Endorsement:
                 Type: Signature
-                Rule: "OR('Org3MSP.peer')"
+                Rule: "OR('ProducerMSP.peer')"
 
         AnchorPeers:
             # AnchorPeers defines the location of peers which can be used
             # for cross org gossip communication.  Note, this value is only
             # encoded in the genesis block in the Application section context
-            - Host: peer0.org3.example.com
+            - Host: peer0.producer.bcfm.com
+              Port: 10051
+    
+    - &Farmacy
+        # DefaultOrg defines the organization which is used in the sampleconfig
+        # of the fabric.git development environment
+        Name: FarmacyMSP
+
+        # ID to load the MSP definition as
+        ID: FarmacyMSP
+
+        MSPDir: ../organizations/peerOrganizations/farmacy.bcfm.com/msp
+
+        # Policies defines the set of policies at this level of the config tree
+        # For organization policies, their canonical path is usually
+        #   /Channel/<Application|Orderer>/<OrgName>/<PolicyName>
+        Policies:
+            Readers:
+                Type: Signature
+                Rule: "OR('FarmacyMSP.admin', 'FarmacyMSP.peer', 'FarmacyMSP.client')"
+            Writers:
+                Type: Signature
+                Rule: "OR('FarmacyMSP.admin', 'FarmacyMSP.client')"
+            Admins:
+                Type: Signature
+                Rule: "OR('FarmacyMSP.admin')"
+            Endorsement:
+                Type: Signature
+                Rule: "OR('FarmacyMSP.peer')"
+
+        AnchorPeers:
+            # AnchorPeers defines the location of peers which can be used
+            # for cross org gossip communication.  Note, this value is only
+            # encoded in the genesis block in the Application section context
+            - Host: peer0.farmacy.bcfm.com
               Port: 11051
 
+    - &Agency
+        # DefaultOrg defines the organization which is used in the sampleconfig
+        # of the fabric.git development environment
+        Name: AgencyMSP
+
+        # ID to load the MSP definition as
+        ID: AgencyMSP
+
+        MSPDir: ../organizations/peerOrganizations/agency.bcfm.com/msp
+
+        # Policies defines the set of policies at this level of the config tree
+        # For organization policies, their canonical path is usually
+        #   /Channel/<Application|Orderer>/<OrgName>/<PolicyName>
+        Policies:
+            Readers:
+                Type: Signature
+                Rule: "OR('AgencyMSP.admin', 'AgencyMSP.peer', 'AgencyMSP.client')"
+            Writers:
+                Type: Signature
+                Rule: "OR('AgencyMSP.admin', 'AgencyMSP.client')"
+            Admins:
+                Type: Signature
+                Rule: "OR('AgencyMSP.admin')"
+            Endorsement:
+                Type: Signature
+                Rule: "OR('AgencyMSP.peer')"
+
+        AnchorPeers:
+            # AnchorPeers defines the location of peers which can be used
+            # for cross org gossip communication.  Note, this value is only
+            # encoded in the genesis block in the Application section context
+            - Host: peer0.agency.bcfm.com
+              Port: 12051
 
 ################################################################################
 #
@@ -216,76 +313,6 @@ Capabilities:
 #
 ################################################################################
 Application: &ApplicationDefaults
-    ACLs: &ACLsDefault
-    
-        # ACL policy for lscc's "getid" function
-        lscc/ChaincodeExists: /Channel/Application/Readers
-
-        # ACL policy for lscc's "getdepspec" function
-        lscc/GetDeploymentSpec: /Channel/Application/Readers
-
-        # ACL policy for lscc's "getccdata" function
-        lscc/GetChaincodeData: /Channel/Application/Readers
-
-        # ACL Policy for lscc's "getchaincodes" function
-        lscc/GetInstantiatedChaincodes: /Channel/Application/Readers
-        
-
-        #---Query System Chaincode (qscc) function to policy mapping for access control---#
-
-        # ACL policy for qscc's "GetChainInfo" function
-        qscc/GetChainInfo: /Channel/Application/Readers
-        
-
-        # ACL policy for qscc's "GetBlockByNumber" function
-        qscc/GetBlockByNumber: /Channel/Application/Readers
-
-        # ACL policy for qscc's  "GetBlockByHash" function
-        qscc/GetBlockByHash: /Channel/Application/Readers
-
-        # ACL policy for qscc's "GetTransactionByID" function
-        qscc/GetTransactionByID: /Channel/Application/Readers
-
-        # ACL policy for qscc's "GetBlockByTxID" function
-        qscc/GetBlockByTxID: /Channel/Application/Readers
-
-        #---Configuration System Chaincode (cscc) function to policy mapping for access control---#
-
-        # ACL policy for cscc's "GetConfigBlock" function
-        cscc/GetConfigBlock: /Channel/Application/Readers
-
-        # ACL policy for cscc's "GetConfigTree" function
-        cscc/GetConfigTree: /Channel/Application/Readers
-
-        # ACL policy for cscc's "SimulateConfigTreeUpdate" function
-        cscc/SimulateConfigTreeUpdate: /Channel/Application/Readers
-
-        #---Miscellanesous peer function to policy mapping for access control---#
-
-        # ACL policy for invoking chaincodes on peer
-        peer/Propose: /Channel/Application/Writers
-
-        # ACL policy for chaincode to chaincode invocation
-        peer/ChaincodeToChaincode: /Channel/Application/Readers
-
-        #---Events resource to policy mapping for access control###---#
-
-        # ACL policy for sending block events
-        event/Block: /Channel/Application/Readers
-
-        # ACL policy for sending filtered block events
-        event/FilteredBlock: /Channel/Application/Readers
-
-        # Chaincode Lifecycle Policies introduced in Fabric 2.x
-        # ACL policy for _lifecycle's "CheckCommitReadiness" function
-        _lifecycle/CheckCommitReadiness: /Channel/Application/Writers
-
-        # ACL policy for _lifecycle's "CommitChaincodeDefinition" function
-        _lifecycle/CommitChaincodeDefinition: /Channel/Application/Writers
-
-        # ACL policy for _lifecycle's "QueryChaincodeDefinition" function
-        _lifecycle/QueryChaincodeDefinition: /Channel/Application/Readers
-    
 
     # Organizations is the list of orgs which are defined as participants on
     # the application side of the network
@@ -332,34 +359,36 @@ Orderer: &OrdererDefaults
     # as TLS validation.  The preferred way to specify orderer addresses is now
     # to include the OrdererEndpoints item in your org definition
     Addresses:
-        - orderer.example.com:7050
-        - orderer2.example.com:7050
-        - orderer3.example.com:7050
-        - orderer4.example.com:7050
-        - orderer5.example.com:7050
+        - orderer.bcfm.com:13050
+        - orderer2.bcfm.com:13050
+        - orderer3.bcfm.com:13050
+        - orderer4.bcfm.com:13050
+        - orderer5.bcfm.com:13050
 
     EtcdRaft:
         Consenters:
-        - Host: orderer.example.com
-          Port: 7050
-          ClientTLSCert: ../organizations/ordererOrganizations/example.com/orderers/orderer.example.com/tls/server.crt
-          ServerTLSCert: ../organizations/ordererOrganizations/example.com/orderers/orderer.example.com/tls/server.crt
-        - Host: orderer2.example.com
-          Port: 7050
-          ClientTLSCert: ../organizations/ordererOrganizations/example.com/orderers/orderer2.example.com/tls/server.crt
-          ServerTLSCert: ../organizations/ordererOrganizations/example.com/orderers/orderer2.example.com/tls/server.crt
-        - Host: orderer3.example.com
-          Port: 7050
-          ClientTLSCert: ../organizations/ordererOrganizations/example.com/orderers/orderer3.example.com/tls/server.crt
-          ServerTLSCert: ../organizations/ordererOrganizations/example.com/orderers/orderer3.example.com/tls/server.crt
-        - Host: orderer4.example.com
-          Port: 7050
-          ClientTLSCert: ../organizations/ordererOrganizations/example.com/orderers/orderer4.example.com/tls/server.crt
-          ServerTLSCert: ../organizations/ordererOrganizations/example.com/orderers/orderer4.example.com/tls/server.crt
-        - Host: orderer5.example.com
-          Port: 7050
-          ClientTLSCert: ../organizations/ordererOrganizations/example.com/orderers/orderer5.example.com/tls/server.crt
-          ServerTLSCert: ../organizations/ordererOrganizations/example.com/orderers/orderer5.example.com/tls/server.crt
+        - Host: orderer.bcfm.com
+          Port: 13050
+          ClientTLSCert: ../organizations/ordererOrganizations/bcfm.com/orderers/orderer.bcfm.com/tls/server.crt
+          ServerTLSCert: ../organizations/ordererOrganizations/bcfm.com/orderers/orderer.bcfm.com/tls/server.crt
+        - Host: orderer2.bcfm.com
+          Port: 13050
+          ClientTLSCert: ../organizations/ordererOrganizations/bcfm.com/orderers/orderer2.bcfm.com/tls/server.crt
+          ServerTLSCert: ../organizations/ordererOrganizations/bcfm.com/orderers/orderer2.bcfm.com/tls/server.crt
+        - Host: orderer3.bcfm.com
+          Port: 13050
+          ClientTLSCert: ../organizations/ordererOrganizations/bcfm.com/orderers/orderer3.bcfm.com/tls/server.crt
+          ServerTLSCert: ../organizations/ordererOrganizations/bcfm.com/orderers/orderer3.bcfm.com/tls/server.crt
+        - Host: orderer4.bcfm.com
+          Port: 13050
+          ClientTLSCert: ../organizations/ordererOrganizations/bcfm.com/orderers/orderer4.bcfm.com/tls/server.crt
+          ServerTLSCert: ../organizations/ordererOrganizations/bcfm.com/orderers/orderer4.bcfm.com/tls/server.crt
+        - Host: orderer5.bcfm.com
+          Port: 13050
+          ClientTLSCert: ../organizations/ordererOrganizations/bcfm.com/orderers/orderer5.bcfm.com/tls/server.crt
+          ServerTLSCert: ../organizations/ordererOrganizations/bcfm.com/orderers/orderer5.bcfm.com/tls/server.crt
+
+
     # Batch Timeout: The amount of time to wait before creating a batch
     BatchTimeout: 2s
 
@@ -443,28 +472,38 @@ Channel: &ChannelDefaults
 ################################################################################
 Profiles:
 
-    TwoOrgsOrdererGenesis:
+    BcfmApplicationGenesis:
         <<: *ChannelDefaults
         Orderer:
             <<: *OrdererDefaults
             Organizations:
-                - *OrdererOrg
+                - *BcfmOrdererOrg
             Capabilities:
                 <<: *OrdererCapabilities
-        Consortiums:
-            SampleConsortium:
-                Organizations:
-                    - *Org1
-                    - *Org2
-                    - *Org3
-    TwoOrgsChannel:
-        Consortium: SampleConsortium
+        Application:
+            <<: *ApplicationDefaults
+            Organizations:
+                - *Ua
+                - *Transport
+                - *Provider
+                - *Producer
+                - *Farmacy
+                - *Agency
+
+            Capabilities:
+                <<: *ApplicationCapabilities
+
+    BcfmChannel:
+        Consortium: BcfmConsortium
         <<: *ChannelDefaults
         Application:
             <<: *ApplicationDefaults
             Organizations:
-                - *Org1
-                - *Org2
-                - *Org3
+                - *Ua
+                - *Transport
+                - *Provider
+                - *Producer
+                - *Farmacy
+                - *Agency
             Capabilities:
                 <<: *ApplicationCapabilities

@@ -99,7 +99,6 @@ services:
          aliases:
           - ca.agency.bcfm.com
 
-
   ca_producer:
     deploy:
       placement:
