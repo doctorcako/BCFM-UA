@@ -80,7 +80,7 @@ tls:
 #############################################################################
 ca:
   # Name of this CA
-  name: OrdererUA
+  name: OrdererCA
   # Key file (is only used to import a private key into BCCSP)
   keyfile:
   # Certificate file (default: ca-cert.pem)
@@ -308,7 +308,7 @@ signing:
 #     CA certificates though it can still issue end entity certificates.
 ###########################################################################
 csr:
-  cn: orderer.bcfm.com
+  cn: ca.orderer.bcfm.com
   names:
     - C: US
       ST: "New York"

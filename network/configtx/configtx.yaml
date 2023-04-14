@@ -16,13 +16,13 @@ Organizations:
 
     # SampleOrg defines an MSP using the sampleconfig.  It should never be used
     # in production but may be used as a template for other definitions
-    - &BcfmOrdererOrg
+    - &OrdererOrg
         # DefaultOrg defines the organization which is used in the sampleconfig
         # of the fabric.git development environment
-        Name: BcfmOrdererOrg
+        Name: OrdererOrg
 
         # ID to load the MSP definition as
-        ID: BcfmOrdererMSP
+        ID: OrdererMSP
 
         # MSPDir is the filesystem path which contains the MSP configuration
         MSPDir: ../organizations/ordererOrganizations/bcfm.com/msp
@@ -33,16 +33,19 @@ Organizations:
         Policies:
             Readers:
                 Type: Signature
-                Rule: "OR('BcfmOrdererOrg.member')"
+                Rule: "OR('OrdererMSP.member')"
             Writers:
                 Type: Signature
-                Rule: "OR('BcfmOrdererOrg.member')"
+                Rule: "OR('OrdererMSP.member')"
             Admins:
                 Type: Signature
-                Rule: "OR('BcfmOrdererOrg.admin')"
+                Rule: "OR('OrdererMSP.admin')"
+            Endorsement:
+                Type: Signature
+                Rule: "OR('OrdererMSP.member')"
 
         OrdererEndpoints:
-            - orderer.bcfm.com:13050
+            - orderer.bcfm.com:7050
 
     - &Ua
         # DefaultOrg defines the organization which is used in the sampleconfig
@@ -60,10 +63,10 @@ Organizations:
         Policies:
             Readers:
                 Type: Signature
-                Rule: "OR('UaMSP.admin', 'UaMSP.peer', 'UaMSP.client')"
+                Rule: "OR('UaMSP.member')"
             Writers:
                 Type: Signature
-                Rule: "OR('UaMSP.admin', 'UaMSP.client')"
+                Rule: "OR('UaMSP.member')"
             Admins:
                 Type: Signature
                 Rule: "OR('UaMSP.admin')"
@@ -94,10 +97,10 @@ Organizations:
         Policies:
             Readers:
                 Type: Signature
-                Rule: "OR('TransportMSP.admin', 'TransportMSP.peer', 'TransportMSP.client')"
+                Rule: "OR('TransportMSP.member')"
             Writers:
                 Type: Signature
-                Rule: "OR('TransportMSP.admin', 'TransportMSP.client')"
+                Rule: "OR('TransportMSP.member')"
             Admins:
                 Type: Signature
                 Rule: "OR('TransportMSP.admin')"
@@ -128,10 +131,10 @@ Organizations:
         Policies:
             Readers:
                 Type: Signature
-                Rule: "OR('ProviderMSP.admin', 'ProviderMSP.peer', 'ProviderMSP.client')"
+                Rule: "OR('ProviderMSP.member')"
             Writers:
                 Type: Signature
-                Rule: "OR('ProviderMSP.admin', 'ProviderMSP.client')"
+                Rule: "OR('ProviderMSP.member')"
             Admins:
                 Type: Signature
                 Rule: "OR('ProviderMSP.admin')"
@@ -162,10 +165,10 @@ Organizations:
         Policies:
             Readers:
                 Type: Signature
-                Rule: "OR('ProducerMSP.admin', 'ProducerMSP.peer', 'ProducerMSP.client')"
+                Rule: "OR('ProducerMSP.member')"
             Writers:
                 Type: Signature
-                Rule: "OR('ProducerMSP.admin', 'ProducerMSP.client')"
+                Rule: "OR('ProducerMSP.member')"
             Admins:
                 Type: Signature
                 Rule: "OR('ProducerMSP.admin')"
@@ -196,10 +199,10 @@ Organizations:
         Policies:
             Readers:
                 Type: Signature
-                Rule: "OR('FarmacyMSP.admin', 'FarmacyMSP.peer', 'FarmacyMSP.client')"
+                Rule: "OR('FarmacyMSP.member')"
             Writers:
                 Type: Signature
-                Rule: "OR('FarmacyMSP.admin', 'FarmacyMSP.client')"
+                Rule: "OR('FarmacyMSP.member')"
             Admins:
                 Type: Signature
                 Rule: "OR('FarmacyMSP.admin')"
@@ -230,10 +233,10 @@ Organizations:
         Policies:
             Readers:
                 Type: Signature
-                Rule: "OR('AgencyMSP.admin', 'AgencyMSP.peer', 'AgencyMSP.client')"
+                Rule: "OR('AgencyMSP.member')"
             Writers:
                 Type: Signature
-                Rule: "OR('AgencyMSP.admin', 'AgencyMSP.client')"
+                Rule: "OR('AgencyMSP.member')"
             Admins:
                 Type: Signature
                 Rule: "OR('AgencyMSP.admin')"
@@ -477,24 +480,21 @@ Profiles:
         Orderer:
             <<: *OrdererDefaults
             Organizations:
-                - *BcfmOrdererOrg
+                - *OrdererOrg
             Capabilities:
                 <<: *OrdererCapabilities
-        Application:
-            <<: *ApplicationDefaults
-            Organizations:
-                - *Ua
-                - *Transport
-                - *Provider
-                - *Producer
-                - *Farmacy
-                - *Agency
-
-            Capabilities:
-                <<: *ApplicationCapabilities
+        Consortiums:
+            SampleConsortium:
+                Organizations:
+                    - *Ua
+                    - *Transport
+                    - *Provider
+                    - *Producer
+                    - *Farmacy
+                    - *Agency
 
     BcfmChannel:
-        Consortium: BcfmConsortium
+        Consortium: SampleConsortium
         <<: *ChannelDefaults
         Application:
             <<: *ApplicationDefaults

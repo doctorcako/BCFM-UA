@@ -577,7 +577,7 @@ function createOrderer() {
   #  rm -rf $FABRIC_CA_CLIENT_HOME/msp
 
   set -x
-  fabric-ca-client enroll -u https://admin:adminpw@localhost:13054 --caname ca-orderer --tls.certfiles ${PWD}/organizations/fabric-ca/ordererUA/tls-cert.pem
+  fabric-ca-client enroll -u https://admin:adminpw@localhost:13054 --caname ca-orderer --tls.certfiles ${PWD}/organizations/fabric-ca/ordererOrg/tls-cert.pem
   { set +x; } 2>/dev/null
 
   echo 'NodeOUs:
@@ -597,29 +597,29 @@ function createOrderer() {
 
   infoln "Register orderer"
   set -x
-  fabric-ca-client register --caname ca-orderer --id.name orderer --id.secret ordererpw --id.type orderer --tls.certfiles ${PWD}/organizations/fabric-ca/ordererUA/tls-cert.pem
+  fabric-ca-client register --caname ca-orderer --id.name orderer --id.secret ordererpw --id.type orderer --tls.certfiles ${PWD}/organizations/fabric-ca/ordererOrg/tls-cert.pem
   { set +x; } 2>/dev/null
 
 
   infoln "Register orderer2"
   set -x
-  fabric-ca-client register --caname ca-orderer --id.name orderer2 --id.secret ordererpw --id.type orderer --tls.certfiles  ${PWD}/organizations/fabric-ca/ordererUA/tls-cert.pem
+  fabric-ca-client register --caname ca-orderer --id.name orderer2 --id.secret ordererpw --id.type orderer --tls.certfiles  ${PWD}/organizations/fabric-ca/ordererOrg/tls-cert.pem
   { set +x; } 2>/dev/null
 
   infoln "Register orderer3"
   set -x
-  fabric-ca-client register --caname ca-orderer --id.name orderer3 --id.secret ordererpw --id.type orderer --tls.certfiles  ${PWD}/organizations/fabric-ca/ordererUA/tls-cert.pem
+  fabric-ca-client register --caname ca-orderer --id.name orderer3 --id.secret ordererpw --id.type orderer --tls.certfiles  ${PWD}/organizations/fabric-ca/ordererOrg/tls-cert.pem
   { set +x; } 2>/dev/null
 
 
   infoln "Register orderer4"
   set -x
-  fabric-ca-client register --caname ca-orderer --id.name orderer4 --id.secret ordererpw --id.type orderer --tls.certfiles  ${PWD}/organizations/fabric-ca/ordererUA/tls-cert.pem
+  fabric-ca-client register --caname ca-orderer --id.name orderer4 --id.secret ordererpw --id.type orderer --tls.certfiles  ${PWD}/organizations/fabric-ca/ordererOrg/tls-cert.pem
   { set +x; } 2>/dev/null
 
   infoln "Register orderer5"
   set -x
-  fabric-ca-client register --caname ca-orderer --id.name orderer5 --id.secret ordererpw --id.type orderer --tls.certfiles  ${PWD}/organizations/fabric-ca/ordererUA/tls-cert.pem
+  fabric-ca-client register --caname ca-orderer --id.name orderer5 --id.secret ordererpw --id.type orderer --tls.certfiles  ${PWD}/organizations/fabric-ca/ordererOrg/tls-cert.pem
   { set +x; } 2>/dev/null
 
 
@@ -627,7 +627,7 @@ function createOrderer() {
 
   infoln "Register the orderer admin"
   set -x
-  fabric-ca-client register --caname ca-orderer --id.name ordererAdmin --id.secret ordererAdminpw --id.type admin --tls.certfiles ${PWD}/organizations/fabric-ca/ordererUA/tls-cert.pem
+  fabric-ca-client register --caname ca-orderer --id.name ordererAdmin --id.secret ordererAdminpw --id.type admin --tls.certfiles ${PWD}/organizations/fabric-ca/ordererOrg/tls-cert.pem
   { set +x; } 2>/dev/null
 
   mkdir -p organizations/ordererOrganizations/bcfm.com/orderers
@@ -637,14 +637,14 @@ function createOrderer() {
 
   infoln "Generate the orderer msp"
   set -x
-  fabric-ca-client enroll -u https://orderer:ordererpw@localhost:13054 --caname ca-orderer -M ${PWD}/organizations/ordererOrganizations/bcfm.com/orderers/orderer.bcfm.com/msp --csr.hosts orderer.bcfm.com --csr.hosts localhost --tls.certfiles ${PWD}/organizations/fabric-ca/ordererUA/tls-cert.pem
+  fabric-ca-client enroll -u https://orderer:ordererpw@localhost:13054 --caname ca-orderer -M ${PWD}/organizations/ordererOrganizations/bcfm.com/orderers/orderer.bcfm.com/msp --csr.hosts orderer.bcfm.com --csr.hosts localhost --tls.certfiles ${PWD}/organizations/fabric-ca/ordererOrg/tls-cert.pem
   { set +x; } 2>/dev/null
 
   cp ${PWD}/organizations/ordererOrganizations/bcfm.com/msp/config.yaml ${PWD}/organizations/ordererOrganizations/bcfm.com/orderers/orderer.bcfm.com/msp/config.yaml
 
   infoln "Generate the orderer-tls certificates"
   set -x
-  fabric-ca-client enroll -u https://orderer:ordererpw@localhost:13054 --caname ca-orderer -M ${PWD}/organizations/ordererOrganizations/bcfm.com/orderers/orderer.bcfm.com/tls --enrollment.profile tls --csr.hosts orderer.bcfm.com --csr.hosts localhost --tls.certfiles ${PWD}/organizations/fabric-ca/ordererUA/tls-cert.pem
+  fabric-ca-client enroll -u https://orderer:ordererpw@localhost:13054 --caname ca-orderer -M ${PWD}/organizations/ordererOrganizations/bcfm.com/orderers/orderer.bcfm.com/tls --enrollment.profile tls --csr.hosts orderer.bcfm.com --csr.hosts localhost --tls.certfiles ${PWD}/organizations/fabric-ca/ordererOrg/tls-cert.pem
   { set +x; } 2>/dev/null
 
   cp ${PWD}/organizations/ordererOrganizations/bcfm.com/orderers/orderer.bcfm.com/tls/tlscacerts/* ${PWD}/organizations/ordererOrganizations/bcfm.com/orderers/orderer.bcfm.com/tls/ca.crt
@@ -668,14 +668,14 @@ function createOrderer() {
 
   infoln "Generate the orderer2 msp"
   set -x
-  fabric-ca-client enroll -u https://orderer:ordererpw@localhost:13054 --caname ca-orderer -M ${PWD}/organizations/ordererOrganizations/bcfm.com/orderers/orderer2.bcfm.com/msp --csr.hosts orderer2.bcfm.com --csr.hosts localhost --tls.certfiles ${PWD}/organizations/fabric-ca/ordererUA/tls-cert.pem
+  fabric-ca-client enroll -u https://orderer:ordererpw@localhost:13054 --caname ca-orderer -M ${PWD}/organizations/ordererOrganizations/bcfm.com/orderers/orderer2.bcfm.com/msp --csr.hosts orderer2.bcfm.com --csr.hosts localhost --tls.certfiles ${PWD}/organizations/fabric-ca/ordererOrg/tls-cert.pem
   { set +x; } 2>/dev/null
 
   cp ${PWD}/organizations/ordererOrganizations/bcfm.com/msp/config.yaml ${PWD}/organizations/ordererOrganizations/bcfm.com/orderers/orderer2.bcfm.com/msp/config.yaml
 
   infoln "Generate the orderer2-tls certificates"
   set -x
-  fabric-ca-client enroll -u https://orderer:ordererpw@localhost:13054 --caname ca-orderer -M ${PWD}/organizations/ordererOrganizations/bcfm.com/orderers/orderer2.bcfm.com/tls --enrollment.profile tls --csr.hosts orderer2.bcfm.com --csr.hosts localhost --tls.certfiles ${PWD}/organizations/fabric-ca/ordererUA/tls-cert.pem
+  fabric-ca-client enroll -u https://orderer:ordererpw@localhost:13054 --caname ca-orderer -M ${PWD}/organizations/ordererOrganizations/bcfm.com/orderers/orderer2.bcfm.com/tls --enrollment.profile tls --csr.hosts orderer2.bcfm.com --csr.hosts localhost --tls.certfiles ${PWD}/organizations/fabric-ca/ordererOrg/tls-cert.pem
   { set +x; } 2>/dev/null
 
   cp ${PWD}/organizations/ordererOrganizations/bcfm.com/orderers/orderer2.bcfm.com/tls/tlscacerts/* ${PWD}/organizations/ordererOrganizations/bcfm.com/orderers/orderer2.bcfm.com/tls/ca.crt
@@ -697,14 +697,14 @@ function createOrderer() {
 
   infoln "Generate the orderer3 msp"
   set -x
-  fabric-ca-client enroll -u https://orderer:ordererpw@localhost:13054 --caname ca-orderer -M ${PWD}/organizations/ordererOrganizations/bcfm.com/orderers/orderer3.bcfm.com/msp --csr.hosts orderer3.bcfm.com --csr.hosts localhost --tls.certfiles ${PWD}/organizations/fabric-ca/ordererUA/tls-cert.pem
+  fabric-ca-client enroll -u https://orderer:ordererpw@localhost:13054 --caname ca-orderer -M ${PWD}/organizations/ordererOrganizations/bcfm.com/orderers/orderer3.bcfm.com/msp --csr.hosts orderer3.bcfm.com --csr.hosts localhost --tls.certfiles ${PWD}/organizations/fabric-ca/ordererOrg/tls-cert.pem
   { set +x; } 2>/dev/null
 
   cp ${PWD}/organizations/ordererOrganizations/bcfm.com/msp/config.yaml ${PWD}/organizations/ordererOrganizations/bcfm.com/orderers/orderer3.bcfm.com/msp/config.yaml
 
   infoln "Generate the orderer3-tls certificates"
   set -x
-  fabric-ca-client enroll -u https://orderer:ordererpw@localhost:13054 --caname ca-orderer -M ${PWD}/organizations/ordererOrganizations/bcfm.com/orderers/orderer3.bcfm.com/tls --enrollment.profile tls --csr.hosts orderer3.bcfm.com --csr.hosts localhost --tls.certfiles ${PWD}/organizations/fabric-ca/ordererUA/tls-cert.pem
+  fabric-ca-client enroll -u https://orderer:ordererpw@localhost:13054 --caname ca-orderer -M ${PWD}/organizations/ordererOrganizations/bcfm.com/orderers/orderer3.bcfm.com/tls --enrollment.profile tls --csr.hosts orderer3.bcfm.com --csr.hosts localhost --tls.certfiles ${PWD}/organizations/fabric-ca/ordererOrg/tls-cert.pem
   { set +x; } 2>/dev/null
 
   cp ${PWD}/organizations/ordererOrganizations/bcfm.com/orderers/orderer3.bcfm.com/tls/tlscacerts/* ${PWD}/organizations/ordererOrganizations/bcfm.com/orderers/orderer3.bcfm.com/tls/ca.crt
@@ -727,14 +727,14 @@ function createOrderer() {
 
   infoln "Generate the orderer4 msp"
   set -x
-  fabric-ca-client enroll -u https://orderer:ordererpw@localhost:13054 --caname ca-orderer -M ${PWD}/organizations/ordererOrganizations/bcfm.com/orderers/orderer4.bcfm.com/msp --csr.hosts orderer4.bcfm.com --csr.hosts localhost --tls.certfiles ${PWD}/organizations/fabric-ca/ordererUA/tls-cert.pem
+  fabric-ca-client enroll -u https://orderer:ordererpw@localhost:13054 --caname ca-orderer -M ${PWD}/organizations/ordererOrganizations/bcfm.com/orderers/orderer4.bcfm.com/msp --csr.hosts orderer4.bcfm.com --csr.hosts localhost --tls.certfiles ${PWD}/organizations/fabric-ca/ordererOrg/tls-cert.pem
   { set +x; } 2>/dev/null
 
   cp ${PWD}/organizations/ordererOrganizations/bcfm.com/msp/config.yaml ${PWD}/organizations/ordererOrganizations/bcfm.com/orderers/orderer4.bcfm.com/msp/config.yaml
 
   infoln "Generate the orderer4-tls certificates"
   set -x
-  fabric-ca-client enroll -u https://orderer:ordererpw@localhost:13054 --caname ca-orderer -M ${PWD}/organizations/ordererOrganizations/bcfm.com/orderers/orderer4.bcfm.com/tls --enrollment.profile tls --csr.hosts orderer4.bcfm.com --csr.hosts localhost --tls.certfiles ${PWD}/organizations/fabric-ca/ordererUA/tls-cert.pem
+  fabric-ca-client enroll -u https://orderer:ordererpw@localhost:13054 --caname ca-orderer -M ${PWD}/organizations/ordererOrganizations/bcfm.com/orderers/orderer4.bcfm.com/tls --enrollment.profile tls --csr.hosts orderer4.bcfm.com --csr.hosts localhost --tls.certfiles ${PWD}/organizations/fabric-ca/ordererOrg/tls-cert.pem
   { set +x; } 2>/dev/null
 
   cp ${PWD}/organizations/ordererOrganizations/bcfm.com/orderers/orderer4.bcfm.com/tls/tlscacerts/* ${PWD}/organizations/ordererOrganizations/bcfm.com/orderers/orderer4.bcfm.com/tls/ca.crt
@@ -757,14 +757,14 @@ function createOrderer() {
 
   infoln "Generate the orderer5 msp"
   set -x
-  fabric-ca-client enroll -u https://orderer:ordererpw@localhost:13054 --caname ca-orderer -M ${PWD}/organizations/ordererOrganizations/bcfm.com/orderers/orderer5.bcfm.com/msp --csr.hosts orderer5.bcfm.com --csr.hosts localhost --tls.certfiles ${PWD}/organizations/fabric-ca/ordererUA/tls-cert.pem
+  fabric-ca-client enroll -u https://orderer:ordererpw@localhost:13054 --caname ca-orderer -M ${PWD}/organizations/ordererOrganizations/bcfm.com/orderers/orderer5.bcfm.com/msp --csr.hosts orderer5.bcfm.com --csr.hosts localhost --tls.certfiles ${PWD}/organizations/fabric-ca/ordererOrg/tls-cert.pem
   { set +x; } 2>/dev/null
 
   cp ${PWD}/organizations/ordererOrganizations/bcfm.com/msp/config.yaml ${PWD}/organizations/ordererOrganizations/bcfm.com/orderers/orderer5.bcfm.com/msp/config.yaml
 
   infoln "Generate the orderer5-tls certificates"
   set -x
-  fabric-ca-client enroll -u https://orderer:ordererpw@localhost:13054 --caname ca-orderer -M ${PWD}/organizations/ordererOrganizations/bcfm.com/orderers/orderer5.bcfm.com/tls --enrollment.profile tls --csr.hosts orderer5.bcfm.com --csr.hosts localhost --tls.certfiles ${PWD}/organizations/fabric-ca/ordererUA/tls-cert.pem
+  fabric-ca-client enroll -u https://orderer:ordererpw@localhost:13054 --caname ca-orderer -M ${PWD}/organizations/ordererOrganizations/bcfm.com/orderers/orderer5.bcfm.com/tls --enrollment.profile tls --csr.hosts orderer5.bcfm.com --csr.hosts localhost --tls.certfiles ${PWD}/organizations/fabric-ca/ordererOrg/tls-cert.pem
   { set +x; } 2>/dev/null
 
   cp ${PWD}/organizations/ordererOrganizations/bcfm.com/orderers/orderer5.bcfm.com/tls/tlscacerts/* ${PWD}/organizations/ordererOrganizations/bcfm.com/orderers/orderer5.bcfm.com/tls/ca.crt
@@ -781,7 +781,7 @@ function createOrderer() {
 
   infoln "Generate the admin msp"
   set -x
-  fabric-ca-client enroll -u https://ordererAdmin:ordererAdminpw@localhost:13054 --caname ca-orderer -M ${PWD}/organizations/ordererOrganizations/bcfm.com/users/Admin@bcfm.com/msp --tls.certfiles ${PWD}/organizations/fabric-ca/ordererUA/tls-cert.pem
+  fabric-ca-client enroll -u https://ordererAdmin:ordererAdminpw@localhost:13054 --caname ca-orderer -M ${PWD}/organizations/ordererOrganizations/bcfm.com/users/Admin@bcfm.com/msp --tls.certfiles ${PWD}/organizations/fabric-ca/ordererOrg/tls-cert.pem
   { set +x; } 2>/dev/null
 
   cp ${PWD}/organizations/ordererOrganizations/bcfm.com/msp/config.yaml ${PWD}/organizations/ordererOrganizations/bcfm.com/users/Admin@bcfm.com/msp/config.yaml

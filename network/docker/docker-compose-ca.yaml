@@ -158,9 +158,9 @@ services:
       - "13054:13054"
     command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
     volumes:
-      - /home/ubuntu/BlockchainFarmManager/BCFM-UA/network/organizations/fabric-ca/ordererUA:/etc/hyperledger/fabric-ca-server
+      - /home/ubuntu/BlockchainFarmManager/BCFM-UA/network/organizations/fabric-ca/ordererOrg:/etc/hyperledger/fabric-ca-server
     container_name: ca_ordererUA
     networks:
        bcfm:
          aliases:
-          - ca.ordererUA.bcfm.com
+          - ca.orderer.bcfm.com
