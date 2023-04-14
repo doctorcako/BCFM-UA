@@ -308,7 +308,7 @@ signing:
 #     CA certificates though it can still issue end entity certificates.
 ###########################################################################
 csr:
-  cn: ua.orderer.bcfm.com
+  cn: orderer.bcfm.com
   names:
     - C: US
       ST: "New York"
